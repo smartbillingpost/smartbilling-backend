@@ -46,13 +46,23 @@ app.post("/api/leads", async (req, res) => {
     `,
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    res.json({ success: true });
-  } catch (error) {
-    console.error("Mail Error:", error);
-    res.status(500).json({ error: "Email sending failed" });
-  }
+ try {
+  console.log("📩 NEW LEAD RECEIVED");
+  console.log({
+    business,
+    name,
+    phone,
+    email,
+    plan,
+    time: new Date().toISOString(),
+  });
+
+  res.json({ success: true });
+} catch (error) {
+  console.error("Lead handling error:", error);
+  res.status(500).json({ error: "Lead capture failed" });
+}
+
 });
 
 /* ---------------- START SERVER ---------------- */
